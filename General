@@ -1,0 +1,74 @@
+#importa llibreries
+from machine import Pin
+import time
+import Ultrasonic_Ranging
+from Ultrasonic_Ranging import getSonar
+from myservo import myServo
+
+import bluetooth
+import random
+import struct
+import time
+from ble_advertising import advertising_payload
+
+from micropython import const
+from BLE import BLESimplePeripheral
+
+
+#declarar pins
+servo=myServo(15)#set servo pin
+servo.myServoWriteAngle(0)#Set Servo Angle
+sensorPin=Pin(13,Pin.IN)
+ledPin=Pin(14,Pin.OUT)
+ble = bluetooth.BLE()
+p = BLESimplePeripheral(ble)
+    
+time.sleep_ms(1000)
+
+
+def on_rx(rx_data):
+    print("\nRX", rx_data)
+
+p.on_write(on_rx)
+    
+print("Please use LightBlue to connect to ESP32S3.")
+
+while True:
+    while not p.is_connected():
+        if p.is_connected():
+            # Short burst of queued notifications.
+            tx_data = input("Enter anything: ")
+            while tx_data != 'start':
+                tx_data = input("Enter anything: ")		#pregunta y agafa resposta
+                print("Send: ", tx_data)
+                p.send(tx_data)	#se puede quitar
+            
+    if tx_data == 'start' :
+        print('START')
+        
+        #while True:
+        """if not sensorPin.value():    #si no detecta linia 
+            ledPin.value(1)  #Set led turn on
+            print('cuidado')
+        else:                       #detecta linia
+            ledPin.value(0)  #Set led turn off (indicador)
+            print('sigue linia')
+        
+        servo.myServoWriteAngle(0)      #canviar posició servo
+        time.sleep_ms(500)
+        distance = getSonar()           #agafa distancia
+        print('Distance: ',distance,'cm' )
+
+        #comprovar la dist. pels dos costats
+        if distance < 50:               #si hi ha objecte
+            print('esquivar')
+        
+        servo.myServoWriteAngle(90)     #canviar posició servo
+        time.sleep_ms(500)
+        distance = getSonar()           #agafar dist.
+        print('Distance: ',distance,'cm' )
+        
+        if distance < 50:
+            print('esquivar')"""
+
+
