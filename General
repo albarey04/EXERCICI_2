@@ -1,6 +1,10 @@
-"""En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora"""
+"""
+En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora
+"""
 
-"""importem totes les llibreries"""
+"""
+importem totes les llibreries
+"""
 from machine import Pin
 import time
 import Ultrasonic_Ranging
@@ -17,7 +21,9 @@ from micropython import const
 from BLE import BLESimplePeripheral
 
 
-"""declarem els pins corresponents de cada un dels components"""
+"""
+declarem els pins corresponents de cada un dels components
+"""
 servo=myServo(15)#set servo pin
 servo.myServoWriteAngle(0)#Set Servo Angle
 sensorPin=Pin(13,Pin.IN)
@@ -27,7 +33,9 @@ p = BLESimplePeripheral(ble)
     
 time.sleep_ms(1000)
 
-
+"""
+funció per preparar el bluethooth
+"""
 def on_rx(rx_data):
     print("\nRX", rx_data)
 
@@ -38,39 +46,74 @@ print("Please use LightBlue to connect to ESP32S3.")
 while True:
     while not p.is_connected():
         if p.is_connected():
-            # Short burst of queued notifications.
+            """
+            el dispositiu ja està conectat
+            """
             tx_data = input("Enter anything: ")
             while tx_data != 'start':
-                tx_data = input("Enter anything: ")		#pregunta y agafa resposta
+                tx_data = input("Enter anything: ")
+                """
+                pregunta y agafa resposta
+                """
                 print("Send: ", tx_data)
                 p.send(tx_data)	#se puede quitar
             
     if tx_data == 'start' :
+    """
+    si l'usuari envia start
+    """
         print('START')
         
         #while True:
-        """if not sensorPin.value():    #si no detecta linia 
-            ledPin.value(1)  #Set led turn on
+        if not sensorPin.value():
+        """
+        si no detecta linia
+        """
+            ledPin.value(1)
+            """
+            Set led turn on
+            """
             print('cuidado')
-        else:                       #detecta linia
-            ledPin.value(0)  #Set led turn off (indicador)
+        else:
+        """
+        detecta linia
+        """
+            ledPin.value(0)
+            """
+            Set led turn off (indicador)
+            """
             print('sigue linia')
         
-        servo.myServoWriteAngle(0)      #canviar posició servo
+        servo.myServoWriteAngle(0)
+        """
+        canviar posició servo
+        """
         time.sleep_ms(500)
-        distance = getSonar()           #agafa distancia
+        distance = getSonar()
+        """
+        agafa distancia
+        """
         print('Distance: ',distance,'cm' )
 
         #comprovar la dist. pels dos costats
-        if distance < 50:               #si hi ha objecte
+        if distance < 50:
+        """
+        si hi ha objecte
+        """
             print('esquivar')
         
-        servo.myServoWriteAngle(90)     #canviar posició servo
+        servo.myServoWriteAngle(90)
+        """
+        canviar posició servo
+        """
         time.sleep_ms(500)
-        distance = getSonar()           #agafar dist.
+        distance = getSonar()
+        """
+        agafar dist.
+        """
         print('Distance: ',distance,'cm' )
         
         if distance < 50:
-            print('esquivar')"""
+            print('esquivar')
 
 
