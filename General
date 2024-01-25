@@ -1,4 +1,6 @@
-#importa llibreries
+"""En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora"""
+
+"""importem totes les llibreries"""
 from machine import Pin
 import time
 import Ultrasonic_Ranging
@@ -15,7 +17,7 @@ from micropython import const
 from BLE import BLESimplePeripheral
 
 
-#declarar pins
+"""declarem els pins corresponents de cada un dels components"""
 servo=myServo(15)#set servo pin
 servo.myServoWriteAngle(0)#Set Servo Angle
 sensorPin=Pin(13,Pin.IN)
