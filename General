@@ -1,5 +1,6 @@
 """
-En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora
+En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora.
+Tots els altres mòduls han sigut agafats dels codis d'exemple de la llibreria ultimate descarregada d'internet.
 """
 
 """
@@ -24,8 +25,14 @@ from BLE import BLESimplePeripheral
 """
 declarem els pins corresponents de cada un dels components
 """
-servo=myServo(15)#set servo pin
-servo.myServoWriteAngle(0)#Set Servo Angle
+servo=myServo(15)
+"""
+set servo pin
+"""
+servo.myServoWriteAngle(0)
+"""
+Set Servo Angle
+"""
 sensorPin=Pin(13,Pin.IN)
 ledPin=Pin(14,Pin.OUT)
 ble = bluetooth.BLE()
@@ -56,7 +63,10 @@ while True:
                 pregunta y agafa resposta
                 """
                 print("Send: ", tx_data)
-                p.send(tx_data)	#se puede quitar
+                p.send(tx_data)
+                """
+                se puede quitar
+                """
             
     if tx_data == 'start' :
     """
@@ -64,7 +74,7 @@ while True:
     """
         print('START')
         
-        #while True:
+        while True:
         if not sensorPin.value():
         """
         si no detecta linia
