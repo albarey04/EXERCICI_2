@@ -39,42 +39,29 @@ ble = bluetooth.BLE()
 p = BLESimplePeripheral(ble)
     
 time.sleep_ms(1000)
+flag = False
 
 """
 funció per preparar el bluethooth
 """
 def on_rx(rx_data):
-    print("\nRX", rx_data)
+    global flag
+    print(rx_data)
+    cadena = rx_data.decode('utf-8')
+    print(cadena)
 
+    if cadena == "start":
+        print('START')
+        flag = True
+        
 p.on_write(on_rx)
     
 print("Please use LightBlue to connect to ESP32S3.")
 
 while True:
-    while not p.is_connected():
-        if p.is_connected():
-            """
-            el dispositiu ja està conectat
-            """
-            tx_data = input("Enter anything: ")
-            while tx_data != 'start':
-                tx_data = input("Enter anything: ")
-                """
-                pregunta y agafa resposta
-                """
-                print("Send: ", tx_data)
-                p.send(tx_data)
-                """
-                se puede quitar
-                """
-            
-    if tx_data == 'start' :
-    """
-    si l'usuari envia start
-    """
-        print('START')
+
+    if flag == True:
         
-        while True:
         if not sensorPin.value():
         """
         si no detecta linia
