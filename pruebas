@@ -1,11 +1,4 @@
-"""
-En aquest mòdul hi ha els tests de totes les classes creades, on es veu el correcte funcionament quan les implementem totes alhora.
-Tots els altres mòduls han sigut agafats dels codis d'exemple de la llibreria ultimate descarregada d'internet.
-"""
 
-"""
-importem totes les llibreries
-"""
 from machine import Pin
 import time
 import Ultrasonic_Ranging
@@ -18,23 +11,16 @@ from ble_advertising import advertising_payload
 from micropython import const
 from BLE import BLESimplePeripheral
 
-from rpi_motor import *
-
+from rpi_motor import Motor
 from UartClass import UartClass
 
 uart_communication = UartClass(0,1,3)		#tx,rx
 
-"""
-declarem els pins corresponents de cada un dels components
-"""
+
 servo=myServo(15)
-"""
-set servo pin
-"""
+
 servo.myServoWriteAngle(0)
-"""
-Set Servo Angle
-"""
+
 sensorPin=Pin(13,Pin.IN)
 ledPin=Pin(14,Pin.OUT)
 ble = bluetooth.BLE()
@@ -70,63 +56,47 @@ print("Please use LightBlue to connect to ESP32S3.")
 while flag2 == False:
     
     if flag == True:
-        """
-        si recibe 'start'
-        """
-        #uart_communication.send_command("start")
         
-        #if uart_communication.receive_command() == "start":
+        uart_communication.send_command("start")
+        
+        if uart_communication.receive_command() == "start":
             
-            #print('UAAAAAAAART')
+            print('UAAAAAAAART')
         
-        if not sensorPin.value():
-        """
-        si no detecta linia
-        """
-            ledPin.value(1)
+            if not sensorPin.value():
+            
+                ledPin.value(1)
+                
+                print('cuidado')
+            else:
+            
+                ledPin.value(0)
+                
+                print('sigue linia')
+            
+            servo.myServoWriteAngle(0)
+            
+            time.sleep_ms(500)
+            distance = getSonar()
+            
+            print('Distance: ',distance,'cm' )
+
+            #comprovar la dist. pels dos costats
+            if distance < 50:
+            
+                print('esquivar')
+            
+            servo.myServoWriteAngle(90)
+            
+            time.sleep_ms(500)
+            distance = getSonar()
             """
-            Set led turn on
+            agafar dist.
             """
-            print('cuidado')
+            print('Distance: ',distance,'cm' )
+            
+            if distance < 50:
+                print('esquivar')
         else:
-        """
-        detecta linia
-        """
-            ledPin.value(0)
-            """
-            Set led turn off (indicador)
-            """
-            print('sigue linia')
-        
-        servo.myServoWriteAngle(0)
-        """
-        canviar posició servo
-        """
-        time.sleep_ms(500)
-        distance = getSonar()
-        """
-        agafa distancia
-        """
-        print('Distance: ',distance,'cm' )
-
-        #comprovar la dist. pels dos costats
-        if distance < 50:
-        """
-        si hi ha objecte
-        """
-            print('esquivar')
-        
-        servo.myServoWriteAngle(90)
-        """
-        canviar posició servo
-        """
-        time.sleep_ms(500)
-        distance = getSonar()
-        """
-        agafar dist.
-        """
-        print('Distance: ',distance,'cm' )
-        
-        if distance < 50:
-            print('esquivar')
-
+            print('nada jefe')
+            
