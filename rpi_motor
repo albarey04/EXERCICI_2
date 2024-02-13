@@ -53,7 +53,7 @@ class Car:
         self.motors[2].rotate(power*perc)
         self.motors[3].rotate(power)
     
-    def moveright(self, power, perc):
+    def moveleft(self, power, perc):
         self.motors[0].rotate(power*perc)
         self.motors[1].rotate(power)
         self.motors[2].rotate(power)
