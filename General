@@ -3,9 +3,8 @@ En aquest mòdul hi ha els tests de totes les classes creades, on es veu el corr
 Tots els altres mòduls han sigut agafats dels codis d'exemple de la llibreria ultimate descarregada d'internet.
 """
 
-"""
-importem totes les llibreries
-"""
+#importem totes les llibreries
+
 from machine import Pin
 import time
 import Ultrasonic_Ranging
@@ -22,18 +21,20 @@ from micropython import const
 from BLE import BLESimplePeripheral
 
 
-"""
-declarem els pins corresponents de cada un dels components
-"""
+
+#declarem els pins corresponents de cada un dels components
+
 servo=myServo(15)
-"""
-set servo pin
-"""
+
+#set servo pin
+
 servo.myServoWriteAngle(0)
-"""
-Set Servo Angle
-"""
-sensorPin=Pin(13,Pin.IN)
+
+#Set Servo Angle
+#HEM DE CANVIAR EL NOMBRE DEL PIN EN FUNCIÓ DEL QUE CORRESPONGUI A CADA PIN
+sensor1=Pin(13,Pin.IN) #sensor esquerra
+sensor2=Pin(13,Pin.IN) #sensor central
+sensor3=Pin(13,Pin.IN) #sensor dret
 ledPin=Pin(14,Pin.OUT)
 ble = bluetooth.BLE()
 p = BLESimplePeripheral(ble)
@@ -42,9 +43,9 @@ time.sleep_ms(1000)
 flag = False
 flag2 = False
 
-"""
-funció per preparar el bluethooth
-"""
+
+#funció per preparar el bluethooth
+
 def on_rx(rx_data):
     global flag
     global flag2
@@ -69,56 +70,68 @@ while flag2 == False:
     
     if flag == True:
         
-        if not sensorPin.value():
-        """
-        si no detecta linia
-        """
+        if (not sensor1.value() or sensor2.value() or sensor3.value()):
+        
+        #si no detecta linia cap dels tres sensors
+        
             ledPin.value(1)
-            """
-            Set led turn on
-            """
+            
             print('cuidado')
+            
+            #mourem el gat endavant fins a detectar la línia
+            
+            car.move(50)
         else:
-        """
-        detecta linia
-        """
+        
+        #detecta linia
+        
             ledPin.value(0)
-            """
-            Set led turn off (indicador)
-            """
             print('sigue linia')
+            if sensor1: #si el sensor esquerra detecta linia girem a la dreta
+                car.moveright(50,50)
+            if sensor3: #si el sensor dret detecta linia girem a l'esquerra
+                car.moveleft(50,50)
+            if sensor2: #si el sensor del mig detecta linia seguim recta
+                car.move(50)
+            
+
         
         servo.myServoWriteAngle(0)
-        """
-        canviar posició servo
-        """
+        
+        #canviar posició servo
+        
         time.sleep_ms(500)
         distance = getSonar()
-        """
-        agafa distancia
-        """
+        
+        #agafa distancia
+        
         print('Distance: ',distance,'cm' )
 
         #comprovar la dist. pels dos costats
         if distance < 50:
-        """
-        si hi ha objecte
-        """
-            print('esquivar')
         
+        #si hi ha objecte
+        
+            print('esquivar')
+            car.move(0)
+            car.moveright(50,50)
+            car.move(50)
+            
         servo.myServoWriteAngle(90)
-        """
-        canviar posició servo
-        """
+        
+        #canviar posició servo
+        
         time.sleep_ms(500)
         distance = getSonar()
-        """
-        agafar dist.
-        """
+        
+        #agafar distància
+        
         print('Distance: ',distance,'cm' )
         
         if distance < 50:
             print('esquivar')
+            car.moveleft(50,50)
+            car.move(50)
 
 
 
