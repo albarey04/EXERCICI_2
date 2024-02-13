@@ -46,7 +46,19 @@ class Car:
     def move(self, power):
         for i in range(4):
             self.motors[i].rotate(power)
-            
+        
+    def moveright(self, power, perc):
+        self.motors[0].rotate(power)
+        self.motors[1].rotate(power*perc)
+        self.motors[2].rotate(power*perc)
+        self.motors[3].rotate(power)
+    
+    def moveright(self, power, perc):
+        self.motors[0].rotate(power*perc)
+        self.motors[1].rotate(power)
+        self.motors[2].rotate(power)
+        self.motors[3].rotate(power*perc)
+    
     def move_side(self, power):
         self.motors[0].rotate(power)
         self.motors[1].rotate(-power)
@@ -68,3 +80,4 @@ class Car:
 if __name__ == "__main__":
     car = Car()
     car.test()
+
