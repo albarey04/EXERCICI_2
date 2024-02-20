@@ -73,7 +73,7 @@ while flag2 == False:
         
         uart_communication.send_command("start")
 
-        if uart_communication.receive_command() == "start":
+        if receiver.is_started() == True:
             print('UAAAAAART')
         
             if (not sensor1.value() or sensor2.value() or sensor3.value()):
