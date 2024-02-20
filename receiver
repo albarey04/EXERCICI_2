@@ -1,0 +1,9 @@
+from UartClass import UartClass
+from time import sleep_ms
+
+receiver = UartClass(0)
+
+while True:
+  if(receiver.is_started() == True):
+    print("start")
+  sleep_ms(1000)
