@@ -1,9 +1,90 @@
 from UartClass import UartClass
 from time import sleep_ms
+from rpi_motor import Motor
+from micropython import const
+from machine import Pin
+from myservo import myServo
 
 receiver = UartClass(0)
 
+#declarem els pins corresponents de cada un dels components
+
+servo=myServo(7)
+
+#set servo pin
+
+servo.myServoWriteAngle(0)
+
+#Set Servo Angle
+sensor1=Pin(4,Pin.IN) #sensor esquerra
+sensor2=Pin(5,Pin.IN) #sensor central
+sensor3=Pin(6,Pin.IN) #sensor dret
+#ledPin=Pin(14,Pin.OUT)
+
 while True:
-  if(receiver.is_started() == True):
-    print("start")
-  sleep_ms(1000)
+    if(receiver.is_started() == True):
+        print("start")
+        car.move(50) #para comprobar que se mueve
+        if (not sensor1.value() or sensor2.value() or sensor3.value()):
+            
+            #si no detecta linia cap dels tres sensors
+        
+            #ledPin.value(1)
+        
+            print('cuidado')
+        
+            #mourem el gat endavant fins a detectar la línia
+        
+            car.move(50)
+        else:
+
+            #detecta linia
+
+            #ledPin.value(0)
+            print('sigue linia')
+            if sensor1: #si el sensor esquerra detecta linia girem a la dreta
+                car.moveright(50,50)
+            if sensor3: #si el sensor dret detecta linia girem a l'esquerra
+                car.moveleft(50,50)
+            if sensor2: #si el sensor del mig detecta linia seguim recta
+                car.move(50)
+        
+
+
+        servo.myServoWriteAngle(0)
+
+        #canviar posició servo
+
+        time.sleep_ms(500)
+        distance = getSonar()
+
+        #agafa distancia
+
+        print('Distance: ',distance,'cm' )
+
+        #comprovar la dist. pels dos costats
+        if distance < 50:
+
+        #si hi ha objecte
+
+            print('esquivar')
+            car.move(0)
+            car.moveright(50,50)
+            car.move(50)
+        
+        servo.myServoWriteAngle(90)
+
+        #canviar posició servo
+
+        time.sleep_ms(500)
+        distance = getSonar()
+
+        #agafar distància
+
+        print('Distance: ',distance,'cm' )
+
+        if distance < 50:
+            print('esquivar')
+            car.moveleft(50,50)
+            car.move(50)
+    sleep_ms(1000)
