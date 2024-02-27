@@ -1,8 +1,44 @@
 from UartClass import UartClass
 from time import sleep_ms
+import bluetooth
+from ble_advertising import advertising_payload
+
+from micropython import const
+from BLE import BLESimplePeripheral
 
 sender = UartClass(1,4,5)
+ble = bluetooth.BLE()
+p = BLESimplePeripheral(ble)
+    
+time.sleep_ms(1000)
+flag = False
+flag2 = False
+#funció per preparar el bluethooth
 
-while True:
-  sender.send_command("start")
-  sleep_ms(1000)
+def on_rx(rx_data):
+    global flag
+    global flag2
+    print(rx_data)
+    cadena = rx_data.decode('utf-8')
+    print(cadena)
+
+    if cadena == "start":
+        print('START')
+        flag = True
+
+    if cadena == "stop":
+        print('STOP')
+        flag2 = True
+        
+        
+p.on_write(on_rx)
+    
+print("Please use LightBlue to connect to ESP32S3.")
+
+
+while flag2 == False:
+    
+    if flag == True:
+        sender.send_command("start")
+        sleep_ms(1000)
+
