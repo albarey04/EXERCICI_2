@@ -72,12 +72,4 @@ class Car:
         for i in range(4):
             self.motors[i].rotate(100)
             sleep(2)
-            self.motors[i].rotate(-100)
-            sleep(2)
-            self.motors[i].stop()
-            
-    
-if __name__ == "__main__":
-    car = Car()
-    car.test()
 
