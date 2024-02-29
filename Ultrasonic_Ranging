@@ -1,8 +1,8 @@
 from machine import Pin
 import time
 
-trigPin=Pin(33,Pin.OUT,0)
-echoPin=Pin(32,Pin.IN,0)
+trigPin=Pin(3,Pin.OUT,0)
+echoPin=Pin(2,Pin.IN,0)
 
 soundVelocity=340
 distance=0
@@ -20,6 +20,7 @@ def getSonar():
     pingTime=time.ticks_diff(pingStop,pingStart)
     distance=pingTime*soundVelocity//2//10000
     return int(distance)
+
 
 
     
