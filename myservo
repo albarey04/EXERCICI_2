@@ -2,8 +2,8 @@
 from machine import Pin,PWM
 
 class myServo(object):
-    def __init__(self, pin: int=15, hz: int=50):
-        self._servo = PWM(Pin(pin),hz) 
+    def __init__(self):
+        self._servo = PWM(Pin(7),50) 
     
     def myServoWriteDuty(self, duty):
         if duty <= 26:
@@ -33,4 +33,3 @@ class myServo(object):
         
     def deinit(self):
         self._servo.deinit()
-
