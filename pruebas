@@ -1,9 +1,0 @@
-from UartClass import UartClass
-from time import sleep_ms
-
-sender = UartClass(1,4,5)
-
-while True:
-    sender.send_command("start")
-    sleep_ms(1000)
-            
