@@ -1,3 +1,4 @@
+#importem tots els fitxers que contenen cada part del codi que necessitem
 from UartClass import UartClass
 import time
 from rpi_motor import Car
@@ -7,21 +8,15 @@ from machine import Pin
 from myservo import myServo
 from Ultrasonic_Ranging import getSonar
 
-receiver = UartClass(0)
-car = Car()
+#declarem variables de les classes necessàries
+receiver = UartClass(0) #per connectar ESP32 amb Pico
+car = Car() #per connectar rodes i motor
+servo=myServo() #per declarar el servo
 
-#declarem els pins corresponents de cada un dels components
-servo=myServo()
-
-#set servo pin
-
-servo.myServoWriteAngle(0)
-
-#Set Servo Angle
+#declarem els pins corresponents als sensors
 sensor1=Pin(4,Pin.IN) #sensor dret
 sensor2=Pin(5,Pin.IN) #sensor central
 sensor3=Pin(6,Pin.IN) #sensor esquerre
-#ledPin=Pin(14,Pin.OUT)
 
 #declarem els pins del motor
 m1 = Motor(12, 13)
@@ -29,74 +24,68 @@ m2 = Motor(15, 14)
 m3 = Motor(17, 16)
 m4 = Motor(18, 19)
 
+#inicialitzem l'angle del servo
+servo.myServoWriteAngle(0)
 
+
+#farem un bucle inifinit perquè faci el programa fins arribar al final de la línia o rebre per bluetooth stop.
 while True:
-    servo.myServoWriteAngle(90)
-    time.sleep_ms(500)
-    servo.myServoWriteAngle(0)
 
-#     if(receiver.is_started() == True):
+#en cas que rebem un start des del bluetooth engegarem el programa
+#if(receiver.is_started() == True):
     #car.move(25) #para comprobar que se mueve
-    if (sensor1.value()):
-        
-        #si no detecta linia cap dels tres sensors
-    
-        #ledPin.value(1)
-    
-        print('cuidado')
-            
-        car.move(0)
-    else:
 
-        #detecta linia
+#FALTARÀ COMPROVAR QUE FUNCIONA CADA PART PER SEPARAT
+#FALTARÀ AJUNTAR TOTES LES PARTS (SEGUIR LINIA I ESQUIVAR OBJECTE)
+#PART PER SEGUIR LINIA
 
-        #ledPin.value(0)
+    #FEM UN IF PER SI NO DETECTA CAP SENSOR?
+    #if ():
+        #print('cuidado')
+        #car.move(0)
+    if (sensor1.value()): #en cas que detecti sensor dret movem a l'esquerra
+        print('detecta dreta')
+        car.moveleft(25,0)
+    if (sensor2.value()): #en cas que detecti sensor central continuem recte
         print('sigue linia')
-        if sensor1: #si el sensor esquerra detecta linia girem a la dreta
-            car.moveright(25,0)
-        if sensor3: #si el sensor dret detecta linia girem a l'esquerra
-            car.moveleft(25,0)
-        if sensor2: #si el sensor del mig detecta linia seguim recta
-            car.move(25)
+        car.move(25)
+    if (sensor3.value()): #en cas que dectecti sensor esquerre movem a la dreta
+        print('detecta esquerra')
+        car.moveright(25,0)
+            
     
-
-
+#PART PER ESQUIVAR L'OBJECTE
+    #VOLEM PROVAR QUE GIRI EL SERVO
+    servo.myServoWriteAngle(90) 
+    time.sleep_ms(500)
     servo.myServoWriteAngle(0)
 
-    #canviar posició servo
-
+    
+    servo.myServoWriteAngle(0) #canviar posició del servo
     time.sleep_ms(500)
-    distance = getSonar()
-
-#     agafa distancia
-
+    distance = getSonar()      #agafem la distància
     print('Distance: ',distance,'cm' )
 
-    #comprovar la dist. pels dos costats
-    if distance < 50:
+    if distance < 50:          #detectem objecte
+        print('esquivar')
+        car.move(0)
+        time.sleep_ms(500)
+        car.moveright(25,50) #ENS HEM DE MIRAR COM DESPLAÇAR-SE AL COSTAT I CONTINUAR ENDAVANT
+        car.move(25)
+        #COM TORNEM A LA LINIA?
 
-#     si hi ha objecte
-
-       print('esquivar')
-       car.move(0)
-       car.moveright(50,50)
-       car.move(50)
-    
-    servo.myServoWriteAngle(90)
-
-    #canviar posició servo
-
+    servo.myServoWriteAngle(90) #canviar posició del servo
     time.sleep_ms(500)
     distance = getSonar()
-
-    #agafar distància
-
     print('Distance: ',distance,'cm' )
 
     if distance < 50:
         print('esquivar')
+        car.move(0)
+        time.sleep_ms(500)
         car.moveleft(25,50)
         car.move(25)
+
     time.sleep_ms(1000)
 
 
