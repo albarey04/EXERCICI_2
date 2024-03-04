@@ -36,22 +36,23 @@ while True:
     #car.move(25) #para comprobar que se mueve
 
 #FALTARÀ COMPROVAR QUE FUNCIONA CADA PART PER SEPARAT
-#FALTARÀ AJUNTAR TOTES LES PARTS (SEGUIR LINIA I ESQUIVAR OBJECTE)
 #PART PER SEGUIR LINIA
 
     #FEM UN IF PER SI NO DETECTA CAP SENSOR?
     #if ():
         #print('cuidado')
         #car.move(0)
-    if (sensor1.value()): #en cas que detecti sensor dret movem a l'esquerra
-        print('detecta dreta')
-        car.moveleft(25,0)
-    if (sensor2.value()): #en cas que detecti sensor central continuem recte
-        print('sigue linia')
-        car.move(25)
-    if (sensor3.value()): #en cas que dectecti sensor esquerre movem a la dreta
-        print('detecta esquerra')
-        car.moveright(25,0)
+    #if (sensor1.value()): #en cas que detecti sensor dret movem a l'esquerra
+        #print('detecta dreta')
+        #car.moveleft(25,10)
+        #time.sleep_ms(2000)
+    #if (sensor2.value()): #en cas que detecti sensor central continuem recte
+        #print('sigue linia')
+        #car.move(25)
+    #if (sensor3.value()): #en cas que dectecti sensor esquerre movem a la dreta
+        #print('detecta esquerra')
+        #car.moveright(25,10)
+        #time.sleep_ms(2000)
             
     
 #PART PER ESQUIVAR L'OBJECTE
@@ -66,26 +67,17 @@ while True:
     distance = getSonar()      #agafem la distància
     print('Distance: ',distance,'cm' )
 
-    if distance < 50:          #detectem objecte
+    if distance < 40:          #detectem objecte
         print('esquivar')
         car.move(0)
         time.sleep_ms(500)
-        car.moveright(25,50) #ENS HEM DE MIRAR COM DESPLAÇAR-SE AL COSTAT I CONTINUAR ENDAVANT
+        car.moveright(25,10) #ENS HEM DE MIRAR COM DESPLAÇAR-SE AL COSTAT I CONTINUAR ENDAVANT
+        time.sleep_ms(2000)
         car.move(25)
-        #COM TORNEM A LA LINIA?
-
-    servo.myServoWriteAngle(90) #canviar posició del servo
-    time.sleep_ms(500)
-    distance = getSonar()
-    print('Distance: ',distance,'cm' )
-
-    if distance < 50:
-        print('esquivar')
-        car.move(0)
-        time.sleep_ms(500)
-        car.moveleft(25,50)
+        time.sleep_ms(1000)
+        car.moveleft(25,10)
+        time.sleep_ms(2000)
         car.move(25)
-
-    time.sleep_ms(1000)
+        time.sleep_ms(1000)
 
 
