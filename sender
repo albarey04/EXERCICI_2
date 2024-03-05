@@ -1,23 +1,18 @@
-#importem tots els fitxers que contenen cada part del codi que necessitem
 from UartClass import UartClass
 from time import sleep_ms
 import bluetooth
 from ble_advertising import advertising_payload
+
 from micropython import const
 from BLE import BLESimplePeripheral
-
-#declarem variables de les classes necessàries
 
 sender = UartClass(1,4,5)
 ble = bluetooth.BLE()
 p = BLESimplePeripheral(ble)
-
-#inicialitzem variables
+    
+time.sleep_ms(1000)
 flag = False
 flag2 = False
-
-time.sleep_ms(1000)
-
 #funció per preparar el bluethooth
 
 def on_rx(rx_data):
@@ -47,3 +42,5 @@ while flag2 == False:
         sender.send_command("start")
         sleep_ms(1000)
 
+sender.send_command("stop")
+sleep_ms(500)
