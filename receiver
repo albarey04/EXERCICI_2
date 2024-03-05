@@ -60,11 +60,11 @@ while True: #HO ELIMINEM QUAN TINGUEM EL CODI BO
         car.move(0) #parem
             
 #PART PER ESQUIVAR L'OBJECTE
-    servo.ServoAngle(45) 
-    time.sleep_ms(500)
-    servo.ServoAngle(135)
-
+    servo.ServoAngle(45) 	#mou cap (costat dreta)
     time.sleep_ms(200)
+    #servo.ServoAngle(135)
+    #time.sleep_ms(200)
+    
     distance = getSonar()      #agafem la distància
     print('Distance: ',distance,'cm' )
 
@@ -78,9 +78,25 @@ while True: #HO ELIMINEM QUAN TINGUEM EL CODI BO
         time.sleep_ms(1400)
         car.move_sideleft(30) #tornem a la línia
         time.sleep_ms(1000)
-    time.sleep_ms(500)
+    
+    
+    servo.ServoAngle(135)		#mou cap (costat esquerra)
+    time.sleep_ms(200)
+    
+    distance = getSonar()      #agafem la distància
+    print('Distance: ',distance,'cm' )
+
+    if distance < 20:          #detectem objecte
+        print('esquivar')
+        car.move(0)
+        time.sleep_ms(500)
+        car.move_sideright(30) #ens movem a la dreta horitzontalment
+        time.sleep_ms(1000)
+        car.move(30) #ens movem recta
+        time.sleep_ms(1400)
+        car.move_sideleft(30) #tornem a la línia
+        time.sleep_ms(1000)
+    #time.sleep_ms(200)
 #car.move(0) #parem un cop rebut stop
-
-
 
 
