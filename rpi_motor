@@ -64,6 +64,12 @@ class Car:
         self.motors[1].rotate(-power)
         self.motors[2].rotate(power)
         self.motors[3].rotate(-power)
+        
+    def move_sideright(self, power):
+        self.move_side(power)
+        
+    def move_sideleft(self, power):
+        self.move_side(-power)
             
     def stop(self):
         self.move(0)
@@ -72,4 +78,12 @@ class Car:
         for i in range(4):
             self.motors[i].rotate(100)
             sleep(2)
+            self.motors[i].rotate(-100)
+            sleep(2)
+            self.motors[i].stop()
+            
+    
+if __name__ == "__main__":
+    car = Car()
+    car.test()
 
