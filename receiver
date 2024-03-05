@@ -5,13 +5,13 @@ from rpi_motor import Car
 from rpi_motor import Motor
 from micropython import const
 from machine import Pin
-from myservo import myServo
+from myservo import Servo
 from Ultrasonic_Ranging import getSonar
 
 #declarem variables de les classes necessàries
 receiver = UartClass(0) #per connectar ESP32 amb Pico
 car = Car() #per connectar rodes i motor
-servo=myServo() #per declarar el servo
+servo=Servo() #per declarar el servo
 
 #declarem els pins corresponents als sensors
 sensor1=Pin(4,Pin.IN) #sensor dret
@@ -24,60 +24,63 @@ m2 = Motor(15, 14)
 m3 = Motor(17, 16)
 m4 = Motor(18, 19)
 
+#inicialitzem variables
+DETECTAT = 0
+NO_DETECTAT = 1
+
 #inicialitzem l'angle del servo
-servo.myServoWriteAngle(0)
+servo.ServoAngle(0)
 
 
-#farem un bucle inifinit perquè faci el programa fins arribar al final de la línia o rebre per bluetooth stop.
-while True:
+while True: #HO ELIMINEM QUAN TINGUEM EL CODI BO
+#while reciever.is_stop() == False: #en cas de rebre un false pararem el programa
+#if(receiver.is_started() == True): #en cas de rebre start començarem el programa
 
-#en cas que rebem un start des del bluetooth engegarem el programa
-#if(receiver.is_started() == True):
-    #car.move(25) #para comprobar que se mueve
-
-#FALTARÀ COMPROVAR QUE FUNCIONA CADA PART PER SEPARAT
 #PART PER SEGUIR LINIA
-
-    #FEM UN IF PER SI NO DETECTA CAP SENSOR?
-    #if ():
-        #print('cuidado')
-        #car.move(0)
-    #if (sensor1.value()): #en cas que detecti sensor dret movem a l'esquerra
-        #print('detecta dreta')
-        #car.moveleft(25,10)
-        #time.sleep_ms(2000)
-    #if (sensor2.value()): #en cas que detecti sensor central continuem recte
-        #print('sigue linia')
-        #car.move(25)
-    #if (sensor3.value()): #en cas que dectecti sensor esquerre movem a la dreta
-        #print('detecta esquerra')
-        #car.moveright(25,10)
-        #time.sleep_ms(2000)
+    if (sensor1.value() == NO_DETECTAT & sensor2.value() == NO_DETECTAT & sensor3.value() == NO_DETECTAT): #en cas que no detecti cap sensor
+        print('cuidado')
+        car.move(0)
+    if (sensor1.value()== DETECTAT & sensor2.value()== DETECTAT): #en cas que detecti sensor dret movem a l'esquerra
+        print('detecta dreta')
+        while (sensor1.value()== DETECTAT):
+            car.moveright(25,0.5)
+            time.sleep_ms(5)
+    '''if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
+        print('sigue linia')
+        while (sensor2.value() == DETECTAT):
+            car.move(25)
+            time.sleep_ms(5)'''
+    if (sensor3.value() == DETECTAT & sensor1.value()== DETECTAT): #en cas que dectecti sensor esquerre movem a la dreta
+        print('detecta esquerra')
+        while (sensor3.value() == DETECTAT):
+            car.moveleft(25,0.5)
+            time.sleep_ms(5)
+    if(sensor1.value() == DETECTAT & sensor2.value() == DETECTAT & sensor3.value() == DETECTAT): #en cas d'arribar al final
+        print('final')
+        car.move(0) #parem
             
-    
 #PART PER ESQUIVAR L'OBJECTE
-    #VOLEM PROVAR QUE GIRI EL SERVO
-    servo.myServoWriteAngle(90) 
+    servo.ServoAngle(45) 
     time.sleep_ms(500)
-    servo.myServoWriteAngle(0)
+    servo.ServoAngle(135)
 
-    
-    servo.myServoWriteAngle(0) #canviar posició del servo
-    time.sleep_ms(500)
+    time.sleep_ms(200)
     distance = getSonar()      #agafem la distància
     print('Distance: ',distance,'cm' )
 
-    if distance < 40:          #detectem objecte
+    if distance < 20:          #detectem objecte
         print('esquivar')
         car.move(0)
         time.sleep_ms(500)
-        car.moveright(25,10) #ENS HEM DE MIRAR COM DESPLAÇAR-SE AL COSTAT I CONTINUAR ENDAVANT
-        time.sleep_ms(2000)
-        car.move(25)
+        car.move_sideright(30) #ens movem a la dreta horitzontalment
         time.sleep_ms(1000)
-        car.moveleft(25,10)
-        time.sleep_ms(2000)
-        car.move(25)
+        car.move(30) #ens movem recta
+        time.sleep_ms(1400)
+        car.move_sideleft(30) #tornem a la línia
         time.sleep_ms(1000)
+    time.sleep_ms(500)
+#car.move(0) #parem un cop rebut stop
+
+
 
 
