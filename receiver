@@ -32,20 +32,19 @@ NO_DETECTAT = 1
 servo.ServoAngle(0)
 
 
-while True: #HO ELIMINEM QUAN TINGUEM EL CODI BO
-#while reciever.is_stop() == False: #en cas de rebre un false pararem el programa
-#if(receiver.is_started() == True): #en cas de rebre start començarem el programa
+while reciever.is_stop() == False: #en cas de rebre un false pararem el programa
+    if(receiver.is_started() == True): #en cas de rebre start començarem el programa
 
 #PART PER SEGUIR LINIA
-    if (sensor1.value() == NO_DETECTAT & sensor2.value() == NO_DETECTAT & sensor3.value() == NO_DETECTAT): #en cas que no detecti cap sensor
-        print('cuidado')
-        car.move(0)
-    if (sensor1.value()== DETECTAT & sensor2.value()== DETECTAT): #en cas que detecti sensor dret movem a l'esquerra
-        print('detecta dreta')
-        while (sensor1.value()== DETECTAT):
-            car.moveright(25,0.5)
-            time.sleep_ms(5)
-    '''if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
+        if (sensor1.value() == NO_DETECTAT & sensor2.value() == NO_DETECTAT & sensor3.value() == NO_DETECTAT): #en cas que no detecti cap sensor
+            print('cuidado')
+            car.move(0)
+        if (sensor1.value()== DETECTAT & sensor2.value()== DETECTAT): #en cas que detecti sensor dret movem a l'esquerra
+            print('detecta dreta')
+            while (sensor1.value()== DETECTAT):
+                car.moveright(25,0.5)
+                time.sleep_ms(5)
+         *if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
         print('sigue linia')
         while (sensor2.value() == DETECTAT):
             car.move(25)
