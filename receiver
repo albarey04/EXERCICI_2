@@ -39,64 +39,60 @@ while reciever.is_stop() == False: #en cas de rebre un false pararem el programa
         if (sensor1.value() == NO_DETECTAT & sensor2.value() == NO_DETECTAT & sensor3.value() == NO_DETECTAT): #en cas que no detecti cap sensor
             print('cuidado')
             car.move(0)
-        if (sensor1.value()== DETECTAT & sensor2.value()== DETECTAT): #en cas que detecti sensor dret movem a l'esquerra
+        if (sensor1.value()== DETECTAT & sensor2.value()== DETECTAT): #en cas que detecti sensor dret movem a la dreta
             print('detecta dreta')
-            while (sensor1.value()== DETECTAT):
+            while (sensor1.value()== DETECTAT): #mentre continuem detectant el sensor dret
                 car.moveright(25,0.5)
                 time.sleep_ms(5)
-         *if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
-        print('sigue linia')
-        while (sensor2.value() == DETECTAT):
-            car.move(25)
-            time.sleep_ms(5)'''
-    if (sensor3.value() == DETECTAT & sensor1.value()== DETECTAT): #en cas que dectecti sensor esquerre movem a la dreta
-        print('detecta esquerra')
-        while (sensor3.value() == DETECTAT):
-            car.moveleft(25,0.5)
-            time.sleep_ms(5)
-    if(sensor1.value() == DETECTAT & sensor2.value() == DETECTAT & sensor3.value() == DETECTAT): #en cas d'arribar al final
-        print('final')
-        car.move(0) #parem
+        "if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
+            print('sigue linia')
+            while (sensor2.value() == DETECTAT): #mentre continuem detectant el sensor esquerra
+                car.move(25)
+                time.sleep_ms(5)"
+        if (sensor3.value() == DETECTAT & sensor1.value()== DETECTAT): #en cas que dectecti sensor esquerre movem a l'esquerra
+            print('detecta esquerra')
+            while (sensor3.value() == DETECTAT):
+                car.moveleft(25,0.5)
+                time.sleep_ms(5)
+        if(sensor1.value() == DETECTAT & sensor2.value() == DETECTAT & sensor3.value() == DETECTAT): #en cas d'arribar al final
+            print('final')
+            car.move(0) #parem
             
 #PART PER ESQUIVAR L'OBJECTE
-    servo.ServoAngle(45) 	#mou cap (costat dreta)
-    time.sleep_ms(200)
-    #servo.ServoAngle(135)
-    #time.sleep_ms(200)
+        servo.ServoAngle(45) 	#mou cap (costat dreta)
+        time.sleep_ms(200)
     
-    distance = getSonar()      #agafem la distància
-    print('Distance: ',distance,'cm' )
+        distance = getSonar()      #agafem la distància
+        print('Distance: ',distance,'cm' )
 
-    if distance < 20:          #detectem objecte
-        print('esquivar')
-        car.move(0)
-        time.sleep_ms(500)
-        car.move_sideright(30) #ens movem a la dreta horitzontalment
-        time.sleep_ms(1000)
-        car.move(30) #ens movem recta
-        time.sleep_ms(1400)
-        car.move_sideleft(30) #tornem a la línia
-        time.sleep_ms(1000)
+        if distance < 20:          #detectem objecte
+            print('esquivar')
+            car.move(0)
+            time.sleep_ms(500)
+            car.move_sideright(30) #ens movem a la dreta horitzontalment
+            time.sleep_ms(1000)
+            car.move(30) #ens movem recta
+            time.sleep_ms(1400)
+            car.move_sideleft(30) #tornem a la línia
+            time.sleep_ms(1000)
     
     
-    servo.ServoAngle(135)		#mou cap (costat esquerra)
-    time.sleep_ms(200)
+        servo.ServoAngle(135)		#mou cap (costat esquerra)
+        time.sleep_ms(200)
     
-    distance = getSonar()      #agafem la distància
-    print('Distance: ',distance,'cm' )
+        distance = getSonar()      #agafem la distància
+        print('Distance: ',distance,'cm' )
 
-    if distance < 20:          #detectem objecte
-        print('esquivar')
-        car.move(0)
-        time.sleep_ms(500)
-        car.move_sideright(30) #ens movem a la dreta horitzontalment
-        time.sleep_ms(1000)
-        car.move(30) #ens movem recta
-        time.sleep_ms(1400)
-        car.move_sideleft(30) #tornem a la línia
-        time.sleep_ms(1000)
-    #time.sleep_ms(200)
-#car.move(0) #parem un cop rebut stop
+        if distance < 20:          #detectem objecte
+            print('esquivar')
+            car.move(0)
+            time.sleep_ms(500)
+            car.move_sideright(30) #ens movem a la dreta horitzontalment
+            time.sleep_ms(1000)
+            car.move(30) #ens movem recta
+            time.sleep_ms(1400)
+            car.move_sideleft(30) #tornem a la línia
+            time.sleep_ms(1000)
 
 
 
