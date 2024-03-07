@@ -1,18 +1,22 @@
+#declarem les llibreries necessàries
 from UartClass import UartClass
 from time import sleep_ms
 import bluetooth
 from ble_advertising import advertising_payload
-
 from micropython import const
 from BLE import BLESimplePeripheral
 
+#declarem les variables de les classes que necessitem
 sender = UartClass(1,4,5)
 ble = bluetooth.BLE()
 p = BLESimplePeripheral(ble)
     
 time.sleep_ms(1000)
+
+#inicialitzem variables
 flag = False
 flag2 = False
+
 #funció per preparar el bluethooth
 
 def on_rx(rx_data):
@@ -36,11 +40,11 @@ p.on_write(on_rx)
 print("Please use LightBlue to connect to ESP32S3.")
 
 
-while flag2 == False:
+while flag2 == False: #mentre no rebem un STOP
     
-    if flag == True:
-        sender.send_command("start")
+    if flag == True: #en cas de rebre start
+        sender.send_command("start") #enviem perquè comenci el programa
         sleep_ms(1000)
 
-sender.send_command("stop")
+sender.send_command("stop") #enviem perquè aturi el programa
 sleep_ms(500)
