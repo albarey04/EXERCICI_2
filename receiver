@@ -44,11 +44,6 @@ while reciever.is_stop() == False: #en cas de rebre un false pararem el programa
             while (sensor1.value()== DETECTAT): #mentre continuem detectant el sensor dret
                 car.moveright(25,0.5)
                 time.sleep_ms(5)
-        "if (sensor2.value() == DETECTAT ): #en cas que detecti sensor central continuem recte
-            print('sigue linia')
-            while (sensor2.value() == DETECTAT): #mentre continuem detectant el sensor esquerra
-                car.move(25)
-                time.sleep_ms(5)"
         if (sensor3.value() == DETECTAT & sensor1.value()== DETECTAT): #en cas que dectecti sensor esquerre movem a l'esquerra
             print('detecta esquerra')
             while (sensor3.value() == DETECTAT):
